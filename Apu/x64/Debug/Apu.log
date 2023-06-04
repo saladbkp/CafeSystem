@@ -1,13 +1,18 @@
 ﻿  Source.c
 C:\Users\khwon\Desktop\Apu\Apu\Header.h(68,46): warning C4013: 'isspace' undefined; assuming extern returning int
-C:\Users\khwon\Desktop\Apu\Apu\Header.h(768,14): warning C4477: 'fscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 1 has type 'int'
-C:\Users\khwon\Desktop\Apu\Apu\Source.c(132,31): warning C4020: 'printTutorOnlyEnroll': too many actual parameters
-C:\Users\khwon\Desktop\Apu\Apu\Source.c(164,34): warning C4020: 'printStudentOnlyEnroll': too many actual parameters
-C:\Users\khwon\Desktop\Apu\Apu\Source.c(268,18): warning C4013: 'toupper' undefined; assuming extern returning int
-C:\Users\khwon\Desktop\Apu\Apu\Source.c(271,16): warning C4133: 'function': incompatible types - from 'student *' to 'user *'
-C:\Users\khwon\Desktop\Apu\Apu\Source.c(322,16): warning C4133: 'function': incompatible types - from 'tutor *' to 'user *'
-C:\Users\khwon\Desktop\Apu\Apu\Source.c(428,16): warning C4133: 'function': incompatible types - from 'student *' to 'user *'
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(982,14): warning C4477: 'fscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 1 has type 'int'
+C:\Users\khwon\Desktop\Apu\Apu\Source.c(147,31): warning C4020: 'printTutorOnlyEnroll': too many actual parameters
+C:\Users\khwon\Desktop\Apu\Apu\Source.c(179,34): warning C4020: 'printStudentOnlyEnroll': too many actual parameters
+C:\Users\khwon\Desktop\Apu\Apu\Source.c(283,18): warning C4013: 'toupper' undefined; assuming extern returning int
+C:\Users\khwon\Desktop\Apu\Apu\Source.c(286,16): warning C4133: 'function': incompatible types - from 'student *' to 'user *'
+C:\Users\khwon\Desktop\Apu\Apu\Source.c(337,16): warning C4133: 'function': incompatible types - from 'tutor *' to 'user *'
+C:\Users\khwon\Desktop\Apu\Apu\Source.c(443,16): warning C4133: 'function': incompatible types - from 'student *' to 'user *'
 C:\Users\khwon\Desktop\Apu\Apu\Header.h(166): warning C4715: 'findTutorName': not all control paths return a value
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(192): warning C4715: 'findSessionName': not all control paths return a value
 C:\Users\khwon\Desktop\Apu\Apu\Header.h(179): warning C4715: 'findStuName': not all control paths return a value
-C:\Users\khwon\Desktop\Apu\Apu\Header.h(338): warning C4715: 'deleteStudent': not all control paths return a value
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(205): warning C4715: 'findEnrollName': not all control paths return a value
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(390): warning C4715: 'deleteStudent': not all control paths return a value
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(540): warning C4715: 'deleteTutor': not all control paths return a value
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(630): warning C4715: 'deleteSession': not all control paths return a value
+C:\Users\khwon\Desktop\Apu\Apu\Header.h(922): warning C4715: 'deleteEnroll': not all control paths return a value
   Apu.vcxproj -> C:\Users\khwon\Desktop\Apu\x64\Debug\Apu.exe

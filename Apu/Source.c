@@ -101,7 +101,22 @@ int main() {
 			case '1':
 				DeleteMenu();
 				break;
+			case '2':
+				DeleteTutorMenu();
+				break;
+			case '3':
+				DeleteSessionMenu();
+				break;
+			case '4':
+				DeleteEnrollMenu();
+				break;
+			default:
+				printf("No this key...\n\n");
+				system("pause");  //暂停
+				system("cls");    //清屏
+				break;
 			}
+
 			break;
 		case '0'://0.退出系统
 			goto loop;
@@ -491,16 +506,109 @@ void DeleteMenu() {
 
 	if (d_list != NULL) {
 		head = deleteStudent(head, d_list);
-		override_Student(head);
+		
+		printStudentNode(head->pNext);
+		//override_Student(head->pNext);
 		printf("\nDelete Successfully...\n");
 		system("pause");
 	}
 	else {
-		printf("\nStudent Not Found...\n");
+		printf("\nStudent ID Not Found...\n");
 		system("pause");
 	}
 	
 
 }
+
+void DeleteTutorMenu() {
+	system("cls");
+
+	printTutor();
+	struct tutor* head = NULL;
+	struct tutor* d_list = NULL;
+	head = make_tutor_linklist();
+
+	char tutor_name[MAXCHAR];
+	printf("Please enter a tutor id: ");
+	scanf("%s", tutor_name);
+
+	d_list = findTutorName(head, tutor_name);
+
+	if (d_list != NULL) {
+		head = deleteTutor(head, d_list);
+
+		printTutorNode(head->pNext);
+		//override_Student(head->pNext);
+		printf("\nDelete Successfully...\n");
+		system("pause");
+	}
+	else {
+		printf("\nTutor ID Not Found...\n");
+		system("pause");
+	}
+
+
+}
+
+void DeleteSessionMenu() {
+	system("cls");
+
+	printSession();
+	struct session* head = NULL;
+	struct session* d_list = NULL;
+	head = make_session_linklist();
+
+	char session_name[MAXCHAR];
+	printf("Please enter a session id: ");
+	scanf("%s", session_name);
+
+	d_list = findSessionName(head, session_name);
+
+	if (d_list != NULL) {
+		head = deleteSession(head, d_list);
+
+		printSessionNode(head->pNext);
+		//override_Student(head->pNext);
+		printf("\nDelete Successfully...\n");
+		system("pause");
+	}
+	else {
+		printf("\nSession ID Not Found...\n");
+		system("pause");
+	}
+
+
+}
+
+void DeleteEnrollMenu() {
+	system("cls");
+
+	printEnroll();
+	struct enroll* head = NULL;
+	struct enroll* d_list = NULL;
+	head = make_enroll_linklist();
+
+	char enroll_name[MAXCHAR];
+	printf("Please enter a session id: ");
+	scanf("%s", enroll_name);
+
+	d_list = findEnrollName(head, enroll_name);
+
+	if (d_list != NULL) {
+		head = deleteEnroll(head, d_list);
+
+		printEnrollNode(head->pNext);
+		//override_Student(head->pNext);
+		printf("\nDelete Successfully...\n");
+		system("pause");
+	}
+	else {
+		printf("\nSession ID Not Found...\n");
+		system("pause");
+	}
+
+
+}
+
 
 // scanf no \n

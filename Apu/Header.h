@@ -152,7 +152,7 @@ int checktutor(struct tutor* tt)
 	return exist;
 }
 
-char* findTutorName(struct tutor* head ,char* id) {
+struct tutor* findTutorName(struct tutor* head ,char* id) {
 	struct tutor* tt_p;
 	tt_p = head->pNext;
 	if (tt_p == NULL)
@@ -160,7 +160,7 @@ char* findTutorName(struct tutor* head ,char* id) {
 	while (tt_p != NULL)
 	{
 		if (strcmp(id, trim(tt_p->tutorid)) == 0)
-			return trim(tt_p->fullName);
+			return tt_p;
 		tt_p = tt_p->pNext;
 	}
 }
@@ -178,6 +178,31 @@ struct student* findStuName(struct student* head, char* id) {
 	}
 }
 
+struct session* findSessionName(struct session* head, char* id) {
+	struct session* ss_p;
+	ss_p = head->pNext;
+	if (ss_p == NULL)
+		return NULL;
+	while (ss_p != NULL)
+	{
+		if (strcmp(id, trim(ss_p->sessionid)) == 0)
+			return ss_p;
+		ss_p = ss_p->pNext;
+	}
+}
+
+struct enroll* findEnrollName(struct enroll* head, char* id) {
+	struct enroll* en_p;
+	en_p = head->pNext;
+	if (en_p == NULL)
+		return NULL;
+	while (en_p != NULL)
+	{
+		if (strcmp(id, trim(en_p->sessionCode)) == 0)
+			return en_p;
+		en_p = en_p->pNext;
+	}
+}
 
 #pragma endregion
 
@@ -310,6 +335,33 @@ void printStudent() {
 	
 }
 
+void printStudentNode(struct student *p) {
+	system("cls");
+
+	printf("*********************************************************************************\n");
+	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
+	printf("*********************************************************************************\n");
+	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
+	printf("*********************************************************************************\n");
+	
+	while (p)
+	{
+
+		printf("*\t%s\t*\t%s\t*\t%s\t*\n",
+			p->userid,
+			p->fullName,
+			p->gender
+		);
+		p = p->pNext;
+	}
+	printf("*********************************************************************************\n");
+
+	system("pause");
+	system("cls");
+
+}
+
+
 struct student* deleteStudent(struct student* stu, struct student* t) {
 
 	struct student* p = NULL;
@@ -434,7 +486,58 @@ void printTutor() {
 	system("pause");
 	system("cls");
 }
+void printTutorNode(struct tutor* p) {
+	system("cls");
 
+	printf("*********************************************************************************\n");
+	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
+	printf("*********************************************************************************\n");
+	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
+	printf("*********************************************************************************\n");
+
+	while (p)
+	{
+
+		printf("*\t%s\t*\t%s\t*\t%s\t*\n",
+			p->tutorid,
+			p->fullName,
+			p->courseName
+		);
+		p = p->pNext;
+	}
+	printf("*********************************************************************************\n");
+
+	system("pause");
+	system("cls");
+
+}
+
+struct tutor* deleteTutor(struct tutor* tt, struct tutor* t) {
+
+	struct tutor* p = NULL;
+	struct tutor* front_p = NULL;
+	p = tt;
+	while (p != NULL) {
+		if (p == t) {
+			if (p == tt) {
+				tt = p->pNext;
+				free(p);
+				return tt;
+			}
+			else {
+				front_p->pNext = p->pNext;
+				free(p);
+				return tt;
+			}
+
+		}
+		else {
+			front_p = p;
+			p = p->pNext;
+		}
+	}
+
+}
 
 #pragma endregion
 
@@ -499,6 +602,62 @@ int createSession(struct session* ss) {
 	return 1;
 }
 
+struct session* deleteSession(struct session* ss, struct session* t) {
+
+	struct session* p = NULL;
+	struct session* front_p = NULL;
+	p = ss;
+	while (p != NULL) {
+		if (p == t) {
+			if (p == ss) {
+				ss = p->pNext;
+				free(p);
+				return ss;
+			}
+			else {
+				front_p->pNext = p->pNext;
+				free(p);
+				return ss;
+			}
+
+		}
+		else {
+			front_p = p;
+			p = p->pNext;
+		}
+	}
+
+}
+
+void printSessionNode(struct session* p) {
+	system("cls");
+
+	printf("*********************************************************************************\n");
+	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
+	printf("*********************************************************************************\n");
+	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
+	printf("*********************************************************************************\n");
+
+	while (p)
+	{
+
+		printf("*\t%s\t\t*\t%-20s\t*\t%-10s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+			p->sessionid,
+			p->title,
+			p->day,
+			p->startTime,
+			p->Location,
+			p->TutorCode
+		);
+
+		p = p->pNext;
+	}
+	printf("*********************************************************************************\n");
+
+	system("pause");
+	system("cls");
+
+}
 
 void printSession() {
 	system("cls");
@@ -671,7 +830,7 @@ void printTutorOnlyEnroll(struct tutor* head) {
 	system("cls");
 	struct enroll* p;
 	char tutorName[MAXCHAR];
-	strcpy(tutorName, findTutorName(head, curr_user));
+	strcpy(tutorName, trim(findTutorName(head, curr_user)->fullName));
 
 	p = make_enroll_linklist()->pNext;
 
@@ -733,6 +892,61 @@ void printStudentOnlyEnroll(struct student* head) {
 
 	system("pause");
 	system("cls");
+}
+
+struct enroll* deleteEnroll(struct enroll* ss, struct enroll* t) {
+
+	struct enroll* p = NULL;
+	struct enroll* front_p = NULL;
+	p = ss;
+	while (p != NULL) {
+		if (p == t) {
+			if (p == ss) {
+				ss = p->pNext;
+				free(p);
+				return ss;
+			}
+			else {
+				front_p->pNext = p->pNext;
+				free(p);
+				return ss;
+			}
+
+		}
+		else {
+			front_p = p;
+			p = p->pNext;
+		}
+	}
+
+}
+
+void printEnrollNode(struct enroll* p) {
+	system("cls");
+
+	printf("*********************************************************************************\n");
+	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
+	printf("*********************************************************************************\n");
+	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
+	printf("*********************************************************************************\n");
+
+	while (p)
+	{
+
+		printf("*\t%s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+			p->studentName,
+			p->sessionCode,
+			p->TutorCode,
+			p->Location
+		);
+
+		p = p->pNext;
+	}
+	printf("*********************************************************************************\n");
+
+	system("pause");
+	system("cls");
+
 }
 
 #pragma endregion
@@ -824,3 +1038,6 @@ void CreateSessionMenu();
 void CreateEnrollMenu();
 void CreateStudentEnrollMenu();
 void DeleteMenu();
+void DeleteTutorMenu();
+void DeleteSessionMenu();
+void DeleteEnrollMenu();
