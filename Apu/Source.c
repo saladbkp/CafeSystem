@@ -118,6 +118,27 @@ int main() {
 			}
 
 			break;
+		case '4':// update
+			system("cls");
+
+			SubMenu();
+			char menu_sel4 = _getch();
+			switch (menu_sel4)
+			{
+			case '1':
+				UpdateMenu();
+				break;
+			case '2':
+				UpdateTutorMenu();
+				break;
+			case '3':
+				UpdateSessionMenu();
+				break;
+			case '4':
+				UpdateEnrollMenu();
+				break;
+			}
+			break;
 		case '0'://0.退出系统
 			goto loop;
 			break;
@@ -178,6 +199,12 @@ int main() {
 			case '2':
 				printStudentOnlyEnroll(head, curr_user);
 				break;
+			case '3':
+				DeleteOnlyStudentEnrollMenu();
+				break;
+			case '4':
+				UpdateStudentOnlyEnrollMenu();
+				break;
 			case '0'://0.退出系统
 				goto loop;
 				break;
@@ -201,6 +228,7 @@ void Menu() {
 	printf("*\t\t1.Register data\t\t\t*\n");
 	printf("*\t\t2.Print data\t\t\t*\n");
 	printf("*\t\t3.Delete data\t\t\t*\n");
+	printf("*\t\t4.Update data\t\t\t*\n");
 	printf("*\t\t0.Exit system\t\t\t*\n");
 	printf("*************************************************\n");
 };
@@ -580,6 +608,39 @@ void DeleteSessionMenu() {
 
 }
 
+void DeleteOnlyStudentEnrollMenu() {
+
+	
+	struct enroll* head = NULL;
+	struct enroll* d_list = NULL;
+	struct student* stu_head = NULL;
+	head = make_enroll_linklist();
+	stu_head = make_linklist();
+
+	printStudentOnlyEnroll(stu_head);
+
+	char enroll_name[MAXCHAR];
+	printf("Please enter a session id: ");
+	scanf("%s", enroll_name);
+
+	d_list = findEnrollName(head, enroll_name);
+
+	if (d_list != NULL) {
+		head = deleteStudentOnlyEnroll(head, d_list,stu_head);
+		printStudentOnlyEnrollNode(head->pNext, stu_head);
+
+		//override_Student(head->pNext);
+		printf("\nDelete Successfully...\n");
+		system("pause");
+	}
+	else {
+		printf("\nSession ID Not Found...\n");
+		system("pause");
+	}
+
+
+}
+
 void DeleteEnrollMenu() {
 	system("cls");
 
@@ -611,4 +672,285 @@ void DeleteEnrollMenu() {
 }
 
 
+void UpdateMenu() {
+	system("cls");
+
+	printStudent();
+	struct student* head = NULL;
+	struct student* up_list = NULL;
+
+	head = make_linklist();
+	char id[MAXCHAR];
+	printf("Please enter a student id: ");
+	scanf("%s", id);
+	up_list = findStuName(head, id);
+
+	if (up_list!=NULL) {
+		system("cls");
+		int modify_sel=0;
+		
+		printf("*************************************************\n");
+		printf("*\tPlease select an item \t\t\t*\n");
+		printf("*************************************************\n");
+		printf("*\t\t1.Name\t\t\t\t*\n");
+		printf("*\t\t2.Gender\t\t\t*\n");
+		printf("*\t\t3.Password\t\t\t*\n");
+		printf("*************************************************\n");
+		scanf("%d", &modify_sel);
+		if (modify_sel < 4 && modify_sel > 0) {
+			char updateItem[MAXCHAR];
+			char temp;
+			scanf("%c", &temp);
+			printf("Please enter update detail: ");
+			scanf("%[^\n]", updateItem);
+			
+			head = modifyStu(head, up_list, modify_sel, updateItem);
+			if (head != NULL) {
+				printStudentNode(head->pNext);
+				//override_Student(head->pNext);
+				printf("\nUpdate Successfully...\n");
+				system("pause");
+			}
+			else {
+				printf("\nUpdate Fail...\n");
+				system("pause");
+			}
+		}
+		else {
+			printf("Item Not Found...\n");
+			system("pause");
+		}
+	}
+	else {
+		printf("User Not Found...\n");
+		system("pause");
+	}
+	
+}
+
+void UpdateTutorMenu() {
+	system("cls");
+
+	printTutor();
+	struct tutor* head = NULL;
+	struct tutor* up_list = NULL;
+
+	head = make_tutor_linklist();
+	char id[MAXCHAR];
+	printf("Please enter a tutor id: ");
+	scanf("%s", id);
+	up_list = findTutorName(head, id);
+
+	if (up_list != NULL) {
+		system("cls");
+		int modify_sel = 0;
+
+		printf("*************************************************\n");
+		printf("*\tPlease select an item \t\t\t*\n");
+		printf("*************************************************\n");
+		printf("*\t\t1.Name\t\t\t\t*\n");
+		printf("*\t\t2.Course\t\t\t*\n");
+		printf("*\t\t3.Password\t\t\t*\n");
+		printf("*************************************************\n");
+		scanf("%d", &modify_sel);
+		if (modify_sel < 4 && modify_sel > 0) {
+			char updateItem[MAXCHAR];
+			char temp;
+			scanf("%c", &temp);
+			printf("Please enter update detail: ");
+			scanf("%[^\n]", updateItem);
+
+			head = modifyTutor(head, up_list, modify_sel, updateItem);
+			if (head != NULL) {
+				printTutorNode(head->pNext);
+				//override_Student(head->pNext);
+				printf("\nUpdate Successfully...\n");
+				system("pause");
+			}
+			else {
+				printf("\nUpdate Fail...\n");
+				system("pause");
+			}
+		}
+		else {
+			printf("Item Not Found...\n");
+			system("pause");
+		}
+	}
+	else {
+		printf("User Not Found...\n");
+		system("pause");
+	}
+
+}
+
+void UpdateSessionMenu() {
+	system("cls");
+
+	printSession();
+	struct session* head = NULL;
+	struct session* up_list = NULL;
+
+	head = make_session_linklist();
+	char id[MAXCHAR];
+	printf("Please enter a session id: ");
+	scanf("%s", id);
+	up_list = findSessionName(head, id);
+
+	if (up_list != NULL) {
+		system("cls");
+		int modify_sel = 0;
+
+		printf("*************************************************\n");
+		printf("*\tPlease select an item \t\t\t*\n");
+		printf("*************************************************\n");
+		printf("*\t\t1.Title\t\t\t\t*\n");
+		printf("*\t\t2.Day\t\t\t\t*\n");
+		printf("*\t\t3.StartTime\t\t\t*\n");
+		printf("*\t\t4.Location\t\t\t*\n");
+		printf("*\t\t5.Tutor Code\t\t\t*\n");
+		printf("*************************************************\n");
+		scanf("%d", &modify_sel);
+		if (modify_sel < 4 && modify_sel > 0) {
+			char updateItem[MAXCHAR];
+			char temp;
+			scanf("%c", &temp);
+			printf("Please enter update detail: ");
+			scanf("%[^\n]", updateItem);
+
+			head = modifySession(head, up_list, modify_sel, updateItem);
+			if (head != NULL) {
+				printSessionNode(head->pNext);
+				//override_Student(head->pNext);
+				printf("\nUpdate Successfully...\n");
+				system("pause");
+			}
+			else {
+				printf("\nUpdate Fail...\n");
+				system("pause");
+			}
+		}
+		else {
+			printf("Item Not Found...\n");
+			system("pause");
+		}
+	}
+	else {
+		printf("User Not Found...\n");
+		system("pause");
+	}
+
+}
+
+void UpdateEnrollMenu() {
+	system("cls");
+
+	printEnroll();
+	struct enroll* head = NULL;
+	struct enroll* up_list = NULL;
+
+	head = make_enroll_linklist();
+	char id[MAXCHAR];
+	printf("Please enter a session id: ");
+	scanf("%s", id);
+	up_list = findEnrollName(head, id);
+
+	if (up_list != NULL) {
+		system("cls");
+		int modify_sel = 0;
+
+		printf("*************************************************\n");
+		printf("*\tPlease select an item \t\t\t*\n");
+		printf("*************************************************\n");
+		printf("*\t\t1.Student Name\t\t\t*\n");
+		printf("*\t\t2.Tutor Code\t\t\t*\n");
+		printf("*\t\t3.Location\t\t\t*\n");
+		printf("*************************************************\n");
+		scanf("%d", &modify_sel);
+		if (modify_sel < 4 && modify_sel > 0) {
+			char updateItem[MAXCHAR];
+			char temp;
+			scanf("%c", &temp);
+			printf("Please enter update detail: ");
+			scanf("%[^\n]", updateItem);
+
+			head = modifyEnroll(head, up_list, modify_sel, updateItem);
+			if (head != NULL) {
+				printEnrollNode(head->pNext);
+				//override_Student(head->pNext);
+				printf("\nUpdate Successfully...\n");
+				system("pause");
+			}
+			else {
+				printf("\nUpdate Fail...\n");
+				system("pause");
+			}
+		}
+		else {
+			printf("Item Not Found...\n");
+			system("pause");
+		}
+	}
+	else {
+		printf("User Not Found...\n");
+		system("pause");
+	}
+
+}
+
+void UpdateStudentOnlyEnrollMenu() {
+	system("cls");
+
+	struct enroll* head = NULL;
+	struct enroll* up_list = NULL;
+	struct student* stu_head = NULL;
+	stu_head = make_linklist();
+	head = make_enroll_linklist();
+	printStudentOnlyEnroll(stu_head);
+	char id[MAXCHAR];
+	printf("Please enter a session id: ");
+	scanf("%s", id);
+	up_list = findStudentOnlyEnrollName(head,stu_head ,id);
+
+	if (up_list != NULL) {
+		system("cls");
+		int modify_sel = 0;
+
+		printf("*************************************************\n");
+		printf("*\tPlease select an item \t\t\t*\n");
+		printf("*************************************************\n");
+		printf("*\t\t2.Tutor Code\t\t\t*\n");
+		printf("*\t\t3.Location\t\t\t*\n");
+		printf("*************************************************\n");
+		scanf("%d", &modify_sel);
+		if (modify_sel < 4 && modify_sel > 1) {
+			char updateItem[MAXCHAR];
+			char temp;
+			scanf("%c", &temp);
+			printf("Please enter update detail: ");
+			scanf("%[^\n]", updateItem);
+
+			head = modifyEnroll(head, up_list, modify_sel, updateItem);
+			if (head != NULL) {
+				printStudentOnlyEnrollNode(head->pNext, stu_head);
+				//override_Student(head->pNext);
+				printf("\nUpdate Successfully...\n");
+				system("pause");
+			}
+			else {
+				printf("\nUpdate Fail...\n");
+				system("pause");
+			}
+		}
+		else {
+			printf("Item Not Found...\n");
+			system("pause");
+		}
+	}
+	else {
+		printf("User Not Found...\n");
+		system("pause");
+	}
+
+}
 // scanf no \n

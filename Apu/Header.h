@@ -204,6 +204,23 @@ struct enroll* findEnrollName(struct enroll* head, char* id) {
 	}
 }
 
+struct enroll* findStudentOnlyEnrollName(struct enroll* head, struct student* stu_head,char* id) {
+	char stuName[MAXCHAR];
+	strcpy(stuName, trim(findStuName(stu_head, curr_user)->fullName));
+	
+	struct enroll* en_p;
+	en_p = head->pNext;
+	if (en_p == NULL)
+		return NULL;
+	while (en_p != NULL)
+	{
+		if (strcmp(id, trim(en_p->sessionCode)) == 0 && strcmp(stuName, trim(en_p->studentName)) == 0)
+			return en_p;
+		en_p = en_p->pNext;
+	}
+}
+
+
 #pragma endregion
 
 #pragma region student
@@ -311,15 +328,15 @@ void printStudent() {
 	struct student* p;
 	p = make_linklist()->pNext;
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************\n");
+	printf("*\t\tWelcome to Apu Student Cafe System \t\t*\n");
+	printf("*****************************************************************\n");
+	printf("*\tUser ID\t*\tFullName\t\t*\tGender\t*\n");
+	printf("*****************************************************************\n");
 
 	while (p)
 	{
-		printf("*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%s\t*\t%-20s\t*\t%s\t*\n",
 			p->userid,
 			p->fullName,
 			p->gender
@@ -328,7 +345,7 @@ void printStudent() {
 		p = p->pNext;
 	
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************\n");
 
 	system("pause");
 	system("cls");
@@ -338,24 +355,23 @@ void printStudent() {
 void printStudentNode(struct student *p) {
 	system("cls");
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************\n");
+	printf("*\t\tWelcome to Apu Student Cafe System \t\t*\n");
+	printf("*****************************************************************\n");
+	printf("*\tUser ID\t*\tFullName\t\t*\tGender\t*\n");
+	printf("*****************************************************************\n");
 	
 	while (p)
 	{
 
-		printf("*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%s\t*\t%-20s\t*\t%s\t*\n",
 			p->userid,
 			p->fullName,
 			p->gender
 		);
 		p = p->pNext;
 	}
-	printf("*********************************************************************************\n");
-
+	printf("*****************************************************************\n");
 	system("pause");
 	system("cls");
 
@@ -387,6 +403,39 @@ struct student* deleteStudent(struct student* stu, struct student* t) {
 		}
 	}
 
+}
+
+struct student* modifyStu(struct student* head, struct student* t,int selection,char *changedItem) {
+	switch (selection)
+	{
+	case 1:
+		strcpy(t->fullName, changedItem);
+		return head;
+	case 2:
+		switch (changedItem[0])
+		{
+		case 'M':
+		case 'm':
+			printf("Male.");
+			break;
+		case 'F':
+		case 'f':
+			printf("Female.");
+			break;
+		default:
+			printf("Unspecified Gender.\n");
+			system("pause");
+			return;
+		}
+		strcpy(t->gender, changedItem);
+		return head;
+	case 3:
+		strcpy(t->password, changedItem);
+		printf("New Password: %s", changedItem);
+		return head;	
+	default:
+		return head;
+	}
 }
 
 #pragma endregion
@@ -464,15 +513,15 @@ void printTutor() {
 	struct tutor* p;
 	p = make_tutor_linklist()->pNext;
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tTutor ID\t*\tFullName\t*\tCourse\t\t\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************\n");
+	printf("*\t\t\t Welcome to Apu Student Cafe System \t\t\t\t*\n");
+	printf("*****************************************************************************************\n");
+	printf("*\tTutor ID\t*\tFullName\t\t*\tCourse\t\t\t*\n");
+	printf("*****************************************************************************************\n");
 
 	while (p)
 	{
-		printf("*\t%s\t\t*\t%s\t\t*\t%s\t\t*\n",
+		printf("*\t%s\t\t*\t%-15s\t\t*\t%-15s\t\t*\n",
 			p->tutorid,
 			p->fullName,
 			p->courseName
@@ -481,7 +530,7 @@ void printTutor() {
 		p = p->pNext;
 
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************\n");
 
 	system("pause");
 	system("cls");
@@ -489,23 +538,24 @@ void printTutor() {
 void printTutorNode(struct tutor* p) {
 	system("cls");
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************\n");
+	printf("*\t\t\t Welcome to Apu Student Cafe System \t\t\t\t*\n");
+	printf("*****************************************************************************************\n");
+	printf("*\tTutor ID\t*\tFullName\t\t*\tCourse\t\t\t*\n");
+	printf("*****************************************************************************************\n");
 
 	while (p)
 	{
-
-		printf("*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%s\t\t*\t%-15s\t\t*\t%-15s\t\t*\n",
 			p->tutorid,
 			p->fullName,
 			p->courseName
 		);
+
 		p = p->pNext;
+
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************\n");
 
 	system("pause");
 	system("cls");
@@ -537,6 +587,24 @@ struct tutor* deleteTutor(struct tutor* tt, struct tutor* t) {
 		}
 	}
 
+}
+
+struct tutor* modifyTutor(struct tutor* head, struct tutor* t, int selection, char* changedItem) {
+	switch (selection)
+	{
+	case 1:
+		strcpy(t->fullName, changedItem);
+		return head;
+	case 2:
+		strcpy(t->courseName, changedItem);
+		return head;
+	case 3:
+		strcpy(t->password, changedItem);
+		printf("New Password: %s", changedItem);
+		return head;
+	default:
+		return head;
+	}
 }
 
 #pragma endregion
@@ -632,16 +700,16 @@ struct session* deleteSession(struct session* ss, struct session* t) {
 void printSessionNode(struct session* p) {
 	system("cls");
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*********************************************************************************************************************************************************\n");
+	printf("*\t\t\t\t\t\t\t Welcome to Apu Student Cafe System \t\t\t\t\t\t\t\t*\n");
+	printf("*********************************************************************************************************************************************************\n");
+	printf("*\tSession ID\t*\tTitle\t\t\t*\t\tDay\t*\tStart Time\t*\tLocation\t*\tTutor Code\t*\n");
+	printf("*********************************************************************************************************************************************************\n");
+
 
 	while (p)
 	{
-
-		printf("*\t%s\t\t*\t%-20s\t*\t%-10s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%s\t\t*\t%-20s\t*\t%-15s\t*\t%s\t\t*\t%s\t*\t%s\t\t*\n",
 			p->sessionid,
 			p->title,
 			p->day,
@@ -651,8 +719,9 @@ void printSessionNode(struct session* p) {
 		);
 
 		p = p->pNext;
+
 	}
-	printf("*********************************************************************************\n");
+	printf("*********************************************************************************************************************************************************\n");
 
 	system("pause");
 	system("cls");
@@ -665,15 +734,16 @@ void printSession() {
 	struct session* p;
 	p = make_session_linklist()->pNext;
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*********************************************************************************************************************************************************\n");
+	printf("*\t\t\t\t\t\t\t Welcome to Apu Student Cafe System \t\t\t\t\t\t\t\t*\n");
+	printf("*********************************************************************************************************************************************************\n");
 	printf("*\tSession ID\t*\tTitle\t\t\t*\t\tDay\t*\tStart Time\t*\tLocation\t*\tTutor Code\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*********************************************************************************************************************************************************\n");
+	
 
 	while (p)
 	{
-		printf("*\t%s\t\t*\t%-20s\t*\t%-10s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%s\t\t*\t%-20s\t*\t%-15s\t*\t%s\t\t*\t%s\t*\t%s\t\t*\n",
 			p->sessionid,
 			p->title,
 			p->day,
@@ -685,11 +755,35 @@ void printSession() {
 		p = p->pNext;
 
 	}
-	printf("*********************************************************************************\n");
+	printf("*********************************************************************************************************************************************************\n");
 
 	system("pause");
 	system("cls");
 }
+
+struct session* modifySession(struct session* head, struct session* t, int selection, char* changedItem) {
+	switch (selection)
+	{
+	case 1:
+		strcpy(t->title, changedItem);
+		return head;
+	case 2:
+		strcpy(t->day, changedItem);
+		return head;
+	case 3:
+		strcpy(t->startTime, changedItem);
+		return head;
+	case 4:
+		strcpy(t->Location, changedItem);
+		return head;
+	case 5:
+		strcpy(t->TutorCode, changedItem);
+		return head;
+	default:
+		return head;
+	}
+}
+
 
 #pragma endregion
 
@@ -802,15 +896,15 @@ void printEnroll() {
 	struct enroll* p;
 	p = make_enroll_linklist()->pNext;
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tStudent Name\t*\tSession Code\t\t*\tTutor Code\t*\tLocation\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\t\t\t\t\tWelcome to Apu Student Cafe System \t\t\t\t\t*\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\tStudent Name\t\t*\tSession Code\t*\tTutor Code\t\t*\tLocation\t*\n");
+	printf("*****************************************************************************************************************\n");
 
 	while (p)
 	{
-		printf("*\t%s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%-20s\t*\t%s\t\t*\t%-20s\t*\t%s\t\t*\n",
 			p->studentName,
 			p->sessionCode,
 			p->TutorCode,
@@ -820,7 +914,7 @@ void printEnroll() {
 		p = p->pNext;
 
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
 
 	system("pause");
 	system("cls");
@@ -834,16 +928,16 @@ void printTutorOnlyEnroll(struct tutor* head) {
 
 	p = make_enroll_linklist()->pNext;
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tStudent Name\t*\tSession Code\t\t*\tTutor Code\t*\tLocation\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\t\t\t\t\tWelcome to Apu Student Cafe System \t\t\t\t\t*\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\tStudent Name\t\t*\tSession Code\t*\tTutor Code\t\t*\tLocation\t*\n");
+	printf("*****************************************************************************************************************\n");
 
 	while (p)
 	{
 		if (strcmp(tutorName, trim(p->TutorCode))==0) {
-			printf("*\t%s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+			printf("*\t%-20s\t*\t%s\t\t*\t%-20s\t*\t%s\t\t*\n",
 				p->studentName,
 				p->sessionCode,
 				p->TutorCode,
@@ -854,7 +948,7 @@ void printTutorOnlyEnroll(struct tutor* head) {
 		p = p->pNext;
 
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
 
 	system("pause");
 	system("cls");
@@ -868,16 +962,16 @@ void printStudentOnlyEnroll(struct student* head) {
 
 	p = make_enroll_linklist()->pNext;
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tStudent Name\t*\tSession Code\t\t*\tTutor Code\t*\tLocation\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\t\t\t\t\tWelcome to Apu Student Cafe System \t\t\t\t\t*\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\tStudent Name\t\t*\tSession Code\t*\tTutor Code\t\t*\tLocation\t*\n");
+	printf("*****************************************************************************************************************\n");
 
 	while (p)
 	{
 		if (strcmp(stuName, trim(p->studentName)) == 0) {
-			printf("*\t%s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+			printf("*\t%-20s\t*\t%s\t\t*\t%-20s\t*\t%s\t\t*\n",
 				p->studentName,
 				p->sessionCode,
 				p->TutorCode,
@@ -888,11 +982,12 @@ void printStudentOnlyEnroll(struct student* head) {
 		p = p->pNext;
 
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
 
 	system("pause");
 	system("cls");
 }
+
 
 struct enroll* deleteEnroll(struct enroll* ss, struct enroll* t) {
 
@@ -921,19 +1016,50 @@ struct enroll* deleteEnroll(struct enroll* ss, struct enroll* t) {
 
 }
 
+struct enroll* deleteStudentOnlyEnroll(struct enroll* ss, struct enroll* t, struct student* head) {
+
+	char stuName[MAXCHAR];
+	strcpy(stuName, trim(findStuName(head, curr_user)->fullName));
+
+	struct enroll* p = NULL;
+	struct enroll* front_p = NULL;
+	p = ss;
+	while (p != NULL) {
+		if (p == t && strcmp(stuName, trim(p->studentName)) == 0) {
+			if (p == ss) { // detect only 1 list (head = whole list)
+				ss = p->pNext;
+				free(p);
+				return ss;
+			}
+			else {
+				front_p->pNext = p->pNext;
+				free(p);
+				return ss;
+			}
+
+		}
+		else {
+			front_p = p;
+			p = p->pNext;
+		}
+	}
+
+}
+
+
 void printEnrollNode(struct enroll* p) {
 	system("cls");
 
-	printf("*********************************************************************************\n");
-	printf("*\t\t\tWelcome to Apu Student Cafe System \t\t\t*\n");
-	printf("*********************************************************************************\n");
-	printf("*\tUser ID\t*\tFullName\t*\tGender\t*\n");
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\t\t\t\t\tWelcome to Apu Student Cafe System \t\t\t\t\t*\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\tStudent Name\t\t*\tSession Code\t*\tTutor Code\t\t*\tLocation\t*\n");
+	printf("*****************************************************************************************************************\n");
 
 	while (p)
 	{
 
-		printf("*\t%s\t*\t%s\t*\t%s\t*\t%s\t*\n",
+		printf("*\t%-20s\t*\t%s\t\t*\t%-20s\t*\t%s\t\t*\n",
 			p->studentName,
 			p->sessionCode,
 			p->TutorCode,
@@ -942,11 +1068,60 @@ void printEnrollNode(struct enroll* p) {
 
 		p = p->pNext;
 	}
-	printf("*********************************************************************************\n");
+	printf("*****************************************************************************************************************\n");
 
 	system("pause");
 	system("cls");
 
+}
+
+void printStudentOnlyEnrollNode(struct enroll* p, struct student* head) {
+	system("cls");
+	char stuName[MAXCHAR];
+	strcpy(stuName, trim(findStuName(head, curr_user)->fullName));
+
+	printf("*****************************************************************************************************************\n");
+	printf("*\t\t\t\t\tWelcome to Apu Student Cafe System \t\t\t\t\t*\n");
+	printf("*****************************************************************************************************************\n");
+	printf("*\tStudent Name\t\t*\tSession Code\t*\tTutor Code\t\t*\tLocation\t*\n");
+	printf("*****************************************************************************************************************\n");
+
+	while (p)
+	{
+		if (strcmp(stuName, trim(p->studentName)) == 0) {
+			printf("*\t%-20s\t*\t%s\t\t*\t%-20s\t*\t%s\t\t*\n",
+				p->studentName,
+				p->sessionCode,
+				p->TutorCode,
+				p->Location
+			);
+		}
+
+		p = p->pNext;
+	}
+	printf("*****************************************************************************************************************\n");
+
+	system("pause");
+	system("cls");
+
+}
+
+
+struct enroll* modifyEnroll(struct enroll* head, struct enroll* t, int selection, char* changedItem) {
+	switch (selection)
+	{
+	case 1:
+		strcpy(t->studentName, changedItem);
+		return head;
+	case 2:
+		strcpy(t->TutorCode, changedItem);
+		return head;
+	case 3:
+		strcpy(t->Location, changedItem);
+		return head;
+	default:
+		return head;
+	}
 }
 
 #pragma endregion
@@ -1041,3 +1216,9 @@ void DeleteMenu();
 void DeleteTutorMenu();
 void DeleteSessionMenu();
 void DeleteEnrollMenu();
+void DeleteOnlyStudentEnrollMenu();
+void UpdateMenu();
+void UpdateTutorMenu();
+void UpdateSessionMenu();
+void UpdateEnrollMenu();
+void UpdateStudentOnlyEnrollMenu();
