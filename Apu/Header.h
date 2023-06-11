@@ -521,7 +521,7 @@ void printTutor() {
 
 	while (p)
 	{
-		printf("*\t%s\t\t*\t%-15s\t\t*\t%-15s\t\t*\n",
+		printf("*\t%s\t\t*\t%-15s\t\t*\t%-15s\t*\n",
 			p->tutorid,
 			p->fullName,
 			p->courseName

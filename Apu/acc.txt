@@ -1,6 +1,6 @@
 -
 1 S01 
-Abdullah 
+Abdullah
 S01_Abd 
 m
 -
@@ -15,24 +15,11 @@ S02_Yog
 f
 -
 2 T02 
-Amad 
+Amad
+T02_Ama
 C Sharp Programming
 -
 2 T03 
-Steve 
+Steve
+T03_Ste
 Python Programming
--
-1 S03 
-Abdullah 
-S01_Abd 
-m
--
-1 S04 
-Abdullah 
-S01_Abd 
-m
--
-1 S05
-MOMOTA
-0
-F

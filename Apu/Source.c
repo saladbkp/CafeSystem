@@ -203,7 +203,9 @@ int main() {
 				DeleteOnlyStudentEnrollMenu();
 				break;
 			case '4':
-				UpdateStudentOnlyEnrollMenu();
+				printf("You dont have this access...\n");
+				system("pause");
+				//UpdateStudentOnlyEnrollMenu();
 				break;
 			case '0'://0.退出系统
 				goto loop;
@@ -340,7 +342,8 @@ void CreateMenu() {
 		strcat(password, "_");
 		strncat(password, stu.fullName, 7);
 
-		createStudent(&stu);
+		printStudentNode(&stu);
+		//createStudent(&stu);
 		printf("\nStudent detail created...\n");
 		system("pause");
 
@@ -363,6 +366,8 @@ void CreateTutorMenu() {
 	tt.tutorid[0] = toupper(tt.tutorid[0]);
 
 	if (checkuser(&tt) != 1) {
+		char temp;
+		scanf("%c", &temp);
 		printf("Please enter ur FullName: ");
 		scanf("%[^\n]%*c", tt.fullName);
 		printf("Please enter ur course: ");
@@ -374,7 +379,8 @@ void CreateTutorMenu() {
 			strcat(password, "_");
 			strncat(password, tt.fullName, 7);
 
-			createTutor(&tt);
+			printTutorNode(&tt);
+			//createTutor(&tt);
 			printf("\nTutor detail created...\n");
 			system("pause");
 		}
@@ -392,6 +398,7 @@ void CreateTutorMenu() {
 }
 
 void CreateSessionMenu() {
+	struct user us = { 0 };
 	struct session ss = { 0,"0","0","0" };
 	char day[7][MAXCHAR] = { "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" };
 	system("cls");
@@ -404,19 +411,30 @@ void CreateSessionMenu() {
 		ss.sessionid[i] = toupper(ss.sessionid[i]);
 	}
 	if (checksession(&ss) != 1) {
+		char temp;
+		scanf("%c", &temp);
 		printf("Please enter the title: ");
 		scanf("%[^\n]%*c", ss.title);
 		printf("Please enter the day[1-7]: ");
 		int index_day;
 		scanf("%d", &index_day);
-		strcpy(ss.day, day[index_day]);
+		if(&index_day>0 || &index_day<8)
+			strcpy(ss.day, day[index_day]);
+		else {
+			printf("Input day invalid...\n");
+			system("pause");
+			return;
+		}
 		printf("Please enter the Start Time[00-23:00-59]: ");
 		int hour, minute;
 		scanf("%02d:%02d", &hour, &minute);
-		if ((hour < 24 && hour >= 0) || (minute < 60 && hour >= 0)) {
+		if ((hour < 24 && hour >= 0) && (minute < 60 && hour >= 0)) {
 			if (hour > 12) {
 				sprintf(ss.startTime,"%02d:%02d pm", hour - 12, minute);
 
+			}
+			else if (hour == 12) {
+				sprintf(ss.startTime, "12:%02d pm", minute);
 			}
 			else if (hour > 0) {
 				sprintf(ss.startTime, "%02d:%02d am", hour, minute);
@@ -429,6 +447,7 @@ void CreateSessionMenu() {
 		else {
 			printf("Input time invalid...\n");
 			system("pause");
+			return;
 		}
 		printf("Please enter the location: ");
 		scanf("%s", ss.Location);
@@ -436,9 +455,18 @@ void CreateSessionMenu() {
 		printf("Please enter the tutor code: ");
 
 		scanf("%s", ss.TutorCode);
-
+		strcpy(us.userName, ss.TutorCode);
+		if (checkuser(&us) != 1) 
+		{
+			printf("\nTutorID Not Found...\n");
+			system("pause");
+			return;
+		}
+			
 		if (checksession(&ss) != 1) {
-			createSession(&ss);
+			
+			printSessionNode(&ss);
+			//createSession(&ss);
 			printf("\nSession detail created...\n");
 			system("pause");
 		}
@@ -469,14 +497,21 @@ void CreateEnrollMenu() {
 	stu.userid[0] = toupper(stu.userid[0]);
 
 	if (checkuser(&stu) == 1) {
+		char temp;
+		scanf("%c", &temp);
 		printf("Please enter Session ID: ");
 		scanf("%s", ss.sessionid);
 		for (int i = 0; i < sizeof(ss.sessionid) / sizeof(ss.sessionid)[0]; i++) {
 			ss.sessionid[i] = toupper(ss.sessionid[i]);
 		}
 		if (checksession(&ss) == 1) {
+
 			en = assignEnroll(stu.userid, ss.sessionid);
-			createEnroll(en);
+			en->pNext = NULL;
+			system("pause");
+
+			printEnrollNode(en);
+			//createEnroll(en);
 			printf("\nEnroll detail created...\n");
 			system("pause");
 		}
@@ -623,7 +658,7 @@ void DeleteOnlyStudentEnrollMenu() {
 	printf("Please enter a session id: ");
 	scanf("%s", enroll_name);
 
-	d_list = findEnrollName(head, enroll_name);
+	d_list = findStudentOnlyEnrollName(head, stu_head, enroll_name);
 
 	if (d_list != NULL) {
 		head = deleteStudentOnlyEnroll(head, d_list,stu_head);
