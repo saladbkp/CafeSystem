@@ -1,6 +1,0 @@
-0 admin admin
-1 S01 S01_Abd
-2 T01 T01_Alb
-1 S02 S02_Yog
-2 T02 T02_Amd
-2 T03 T03_Ste

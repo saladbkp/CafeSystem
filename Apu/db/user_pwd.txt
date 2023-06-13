@@ -1,0 +1,11 @@
+
+0 admin admin
+1 S01 S01_Abd 
+1 S02 S02_Yog 
+2 T01 T01_Alb 
+2 T02 T02_Ama 
+2 T03 T03_Ste 
+2 T04 T04_Ali
+2 T05 T05_Ian
+2 T06 T06_Ale
+

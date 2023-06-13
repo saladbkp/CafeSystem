@@ -340,11 +340,14 @@ void CreateMenu() {
 		char password[MAXCHAR];
 		strcpy(password, stu.userid);
 		strcat(password, "_");
-		strncat(password, stu.fullName, 7);
+		strncat(password, stu.fullName, 3);
+		strcpy(stu.password, password);
 
 		printStudentNode(&stu);
-		//createStudent(&stu);
+		createStudent(&stu);
 		printf("\nStudent detail created...\n");
+		printf("Password: %s\n", stu.password);
+
 		system("pause");
 
 	}
@@ -377,11 +380,14 @@ void CreateTutorMenu() {
 			char password[MAXCHAR];
 			strcpy(password, tt.tutorid);
 			strcat(password, "_");
-			strncat(password, tt.fullName, 7);
+			strncat(password, tt.fullName, 3);
+			strcpy(tt.password, password);
 
 			printTutorNode(&tt);
-			//createTutor(&tt);
+			createTutor(&tt);
 			printf("\nTutor detail created...\n");
+			printf("Password: %s\n", tt.password);
+
 			system("pause");
 		}
 		else {
@@ -466,7 +472,7 @@ void CreateSessionMenu() {
 		if (checksession(&ss) != 1) {
 			
 			printSessionNode(&ss);
-			//createSession(&ss);
+			createSession(&ss);
 			printf("\nSession detail created...\n");
 			system("pause");
 		}
@@ -511,7 +517,7 @@ void CreateEnrollMenu() {
 			system("pause");
 
 			printEnrollNode(en);
-			//createEnroll(en);
+			createEnroll(en);
 			printf("\nEnroll detail created...\n");
 			system("pause");
 		}
@@ -571,7 +577,10 @@ void DeleteMenu() {
 		head = deleteStudent(head, d_list);
 		
 		printStudentNode(head->pNext);
+
 		//override_Student(head->pNext);
+		override_all(head->pNext, make_tutor_linklist()->pNext);
+
 		printf("\nDelete Successfully...\n");
 		system("pause");
 	}
@@ -601,7 +610,9 @@ void DeleteTutorMenu() {
 		head = deleteTutor(head, d_list);
 
 		printTutorNode(head->pNext);
-		//override_Student(head->pNext);
+
+		override_all(make_linklist()->pNext, head->pNext);
+
 		printf("\nDelete Successfully...\n");
 		system("pause");
 	}
@@ -631,7 +642,12 @@ void DeleteSessionMenu() {
 		head = deleteSession(head, d_list);
 
 		printSessionNode(head->pNext);
-		//override_Student(head->pNext);
+		
+		// override
+		if (remove("session.txt")==0)
+			overrideSession(head->pNext);
+
+
 		printf("\nDelete Successfully...\n");
 		system("pause");
 	}
@@ -664,7 +680,10 @@ void DeleteOnlyStudentEnrollMenu() {
 		head = deleteStudentOnlyEnroll(head, d_list,stu_head);
 		printStudentOnlyEnrollNode(head->pNext, stu_head);
 
-		//override_Student(head->pNext);
+		// override
+		if (remove("enroll.txt") == 0)
+			overrideEnroll(head->pNext);
+
 		printf("\nDelete Successfully...\n");
 		system("pause");
 	}
@@ -694,7 +713,10 @@ void DeleteEnrollMenu() {
 		head = deleteEnroll(head, d_list);
 
 		printEnrollNode(head->pNext);
-		//override_Student(head->pNext);
+		// override
+		if (remove("enroll.txt") == 0)
+			overrideEnroll(head->pNext);
+
 		printf("\nDelete Successfully...\n");
 		system("pause");
 	}
@@ -742,7 +764,11 @@ void UpdateMenu() {
 			head = modifyStu(head, up_list, modify_sel, updateItem);
 			if (head != NULL) {
 				printStudentNode(head->pNext);
-				//override_Student(head->pNext);
+
+				// override
+				override_all(head->pNext, make_tutor_linklist()->pNext);
+
+
 				printf("\nUpdate Successfully...\n");
 				system("pause");
 			}
@@ -798,7 +824,7 @@ void UpdateTutorMenu() {
 			head = modifyTutor(head, up_list, modify_sel, updateItem);
 			if (head != NULL) {
 				printTutorNode(head->pNext);
-				//override_Student(head->pNext);
+				override_all(make_linklist()->pNext, head->pNext);
 				printf("\nUpdate Successfully...\n");
 				system("pause");
 			}
@@ -846,7 +872,7 @@ void UpdateSessionMenu() {
 		printf("*\t\t5.Tutor Code\t\t\t*\n");
 		printf("*************************************************\n");
 		scanf("%d", &modify_sel);
-		if (modify_sel < 4 && modify_sel > 0) {
+		if (modify_sel < 6 && modify_sel > 0) {
 			char updateItem[MAXCHAR];
 			char temp;
 			scanf("%c", &temp);
@@ -856,7 +882,8 @@ void UpdateSessionMenu() {
 			head = modifySession(head, up_list, modify_sel, updateItem);
 			if (head != NULL) {
 				printSessionNode(head->pNext);
-				//override_Student(head->pNext);
+				if (remove("session.txt")==0)
+					overrideSession(head->pNext);
 				printf("\nUpdate Successfully...\n");
 				system("pause");
 			}
@@ -912,7 +939,8 @@ void UpdateEnrollMenu() {
 			head = modifyEnroll(head, up_list, modify_sel, updateItem);
 			if (head != NULL) {
 				printEnrollNode(head->pNext);
-				//override_Student(head->pNext);
+				if(remove("enroll.txt")==0)
+					overrideEnroll(head->pNext);
 				printf("\nUpdate Successfully...\n");
 				system("pause");
 			}
@@ -968,7 +996,10 @@ void UpdateStudentOnlyEnrollMenu() {
 			head = modifyEnroll(head, up_list, modify_sel, updateItem);
 			if (head != NULL) {
 				printStudentOnlyEnrollNode(head->pNext, stu_head);
-				//override_Student(head->pNext);
+				// override
+				if (remove("enroll.txt") == 0)
+					overrideEnroll(head->pNext);
+
 				printf("\nUpdate Successfully...\n");
 				system("pause");
 			}

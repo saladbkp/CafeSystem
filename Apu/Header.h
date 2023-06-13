@@ -220,42 +220,27 @@ struct enroll* findStudentOnlyEnrollName(struct enroll* head, struct student* st
 	}
 }
 
+int override_all(struct student* stu, struct tutor* tt) {
+	
+	if (remove("user_pwd.txt") == 0) {
+		FILE* fp_u;
+		fp_u = fopen("user_pwd.txt", "w");
+		fprintf(fp_u, "\n0 admin admin");
+		fclose(fp_u);
+	}
 
-#pragma endregion
-
-#pragma region student
-int override_Student(struct student* stu) {
-	FILE* fp;
-	fp = fopen("acc.txt", "w");
-
-	struct student* p;
-	p = stu;
-	do{
-		fprintf(fp, "\n-\n");
-		fprintf(fp, "1 %s\n", p->userid);
-		fprintf(fp, "%s\n", p->fullName);
-		fprintf(fp, "%s\n", p->password);
-		fprintf(fp, "%s", p->gender);
-
-		p = p->pNext;
-	} while (p->pNext != NULL);
-
-	fclose(fp);
-
-	FILE* fp_u;
-	fp_u = fopen("user_pwd.txt", "w");
-
-	struct student* p_acc;
-	p_acc = stu;
-	do{
-		fprintf(fp_u, "\n1 %s %s", p_acc->userid, p_acc->password);
-		p_acc = p_acc->pNext;
-	} while (p_acc->pNext != NULL);
-	fclose(fp_u);
+	if (remove("acc.txt") == 0) {
+		overrideStudent(stu);
+		overrideTutor(tt);
+	}
 
 	return 1;
 }
 
+
+#pragma endregion
+
+#pragma region student
 int createStudent(struct student *stu) {
 	FILE* fp;
 	fp = fopen("acc.txt", "a");
@@ -273,6 +258,32 @@ int createStudent(struct student *stu) {
 	fprintf(fp_u, "\n1 %s %s", stu->userid, stu->password);
 	fclose(fp_u);
 
+	return 1;
+}
+
+int overrideStudent(struct student* head)
+{
+	FILE* fp;
+	fp = fopen("acc.txt", "a");
+	FILE* fp_u;
+	fp_u = fopen("user_pwd.txt", "a");
+	struct student* p;
+	p = head;
+
+	while (p)
+	{
+		fprintf(fp, "-\n");
+		fprintf(fp, "1 %s\n", p->userid);
+		fprintf(fp, "%s\n", p->fullName);
+		fprintf(fp, "%s\n", p->password);
+		fprintf(fp, "%s\n", p->gender);
+		fprintf(fp_u, "1 %s %s\n", p->userid, p->password);
+
+		p = p->pNext;
+	} 
+
+	fclose(fp);
+	fclose(fp_u);
 	return 1;
 }
 
@@ -492,7 +503,7 @@ int createTutor(struct tutor* tt) {
 	fp = fopen("acc.txt", "a");
 
 	fprintf(fp, "\n-\n");
-	fprintf(fp, "1 %s\n", tt->tutorid);
+	fprintf(fp, "2 %s\n", tt->tutorid);
 	fprintf(fp, "%s\n", tt->fullName);
 	fprintf(fp, "%s\n", tt->password);
 	fprintf(fp, "%s", tt->courseName);
@@ -535,6 +546,7 @@ void printTutor() {
 	system("pause");
 	system("cls");
 }
+
 void printTutorNode(struct tutor* p) {
 	system("cls");
 
@@ -605,6 +617,33 @@ struct tutor* modifyTutor(struct tutor* head, struct tutor* t, int selection, ch
 	default:
 		return head;
 	}
+}
+
+int overrideTutor(struct tutor* head)
+{
+	FILE* fp;
+	fp = fopen("acc.txt", "a");
+	FILE* fp_u;
+	fp_u = fopen("user_pwd.txt", "a");
+	struct tutor* p;
+	p = head;
+
+	while (p)
+	{
+		fprintf(fp, "-\n");
+		fprintf(fp, "2 %s\n", p->tutorid);
+		fprintf(fp, "%s\n", p->fullName);
+		fprintf(fp, "%s\n", p->password);
+		fprintf(fp, "%s\n", p->courseName);
+		fprintf(fp_u, "2 %s %s\n", p->tutorid, p->password);
+
+		p = p->pNext;
+
+	}
+
+	fclose(fp);
+	fclose(fp_u);
+	return 1;
 }
 
 #pragma endregion
@@ -784,6 +823,31 @@ struct session* modifySession(struct session* head, struct session* t, int selec
 	}
 }
 
+int overrideSession(struct session* head)
+{
+	FILE* fp;
+	fp = fopen("session.txt", "a");
+
+	struct session* p;
+	p = head;
+
+	while (p)
+	{
+		fprintf(fp, "-\n");
+		fprintf(fp, "%s\n", p->sessionid);
+		fprintf(fp, "%s\n", p->title);
+		fprintf(fp, "%s\n", p->day);
+		fprintf(fp, "%s\n", p->startTime);
+		fprintf(fp, "%s\n", p->Location);
+		fprintf(fp, "%s\n", p->TutorCode);
+
+		p = p->pNext;
+
+	}
+
+	fclose(fp);
+	return 1;
+}
 
 #pragma endregion
 
@@ -1124,6 +1188,29 @@ struct enroll* modifyEnroll(struct enroll* head, struct enroll* t, int selection
 	}
 }
 
+int overrideEnroll(struct enroll* head)
+{
+	FILE* fp;
+	fp = fopen("enroll.txt", "a");
+
+	struct enroll* p;
+	p = head;
+
+	while (p)
+	{
+		fprintf(fp, "-\n");
+		fprintf(fp, "%s\n", p->studentName);
+		fprintf(fp, "%s\n", p->sessionCode);
+		fprintf(fp, "%s\n", p->TutorCode);
+		fprintf(fp, "%s\n", p->Location);
+
+		p = p->pNext;
+
+	}
+
+	fclose(fp);
+	return 1;
+}
 #pragma endregion
 
 #pragma region login
